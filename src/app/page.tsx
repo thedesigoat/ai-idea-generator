@@ -16,13 +16,13 @@ export default function Home() {
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer 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',
+        'Authorization': 'Bearer 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',
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://aiideagenerator.vercel.app',
         'X-Title': 'AI Idea Generator'
       },
       body: JSON.stringify({
-        model: 'google/gemini-pro-1.5',
+        model: 'mistralai/mistral-7b-instruct',
         messages: [{ role: 'user', content: input }]
       }),
     });
