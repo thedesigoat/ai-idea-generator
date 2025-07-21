@@ -8,43 +8,40 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   async function generateIdea() {
-  if (!input) return;
-  setLoading(true);
-  setResponse('');
+    if (!input) return;
+    setLoading(true);
+    setResponse('');
 
-  try {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer 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',
-        'Content-Type': 'application/json',
-        'HTTP-Referer': 'https://aiideagenerator.vercel.app',
-        'X-Title': 'AI Idea Generator'
-      },
-      body: JSON.stringify({
-        model: 'mistralai/mistral-7b-instruct:free',
-        messages: [{ role: 'user', content: input }]
-      }),
-    });
+    try {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Authorization': 'Bearer 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',
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://aiideagenerator.vercel.app',
+          'X-Title': 'AI Idea Generator'
+        },
+        body: JSON.stringify({
+          model: 'mistralai/mistral-7b-instruct:free',
+          messages: [{ role: 'user', content: input }]
+        }),
+      });
 
-    const data = await res.json();
-    console.log('Response JSON:', data); // ← ADD THIS LINE
+      const data = await res.json();
+      console.log('Response JSON:', data);
 
-    if (!data.choices || !data.choices[0]) {
-      setResponse('⚠️ No valid response from AI.');
-    } else {
-      setResponse(data.choices[0].message.content);
+      if (!data.choices || !data.choices[0]) {
+        setResponse('⚠️ No valid response from AI.');
+      } else {
+        setResponse(data.choices[0].message.content);
+      }
+    } catch (err) {
+      console.error(err);
+      setResponse('❌ Error contacting AI.');
     }
-  } catch (err) {
-    console.error(err);
-    setResponse('❌ Error contacting AI.');
+
+    setLoading(false);
   }
-
-  setLoading(false);
-}
-
-
-
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4">
