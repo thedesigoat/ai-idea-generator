@@ -16,7 +16,7 @@ export default function Home() {
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer sk-or-v1-77d2407687d3ee01b5369',
+        'Authorization': 'Bearer sk-or-v1-YOUR_KEY',
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://aiideagenerator.vercel.app',
         'X-Title': 'AI Idea Generator'
@@ -27,20 +27,22 @@ export default function Home() {
       }),
     });
 
-    if (!res.ok) {
-      const errorText = await res.text();
-      throw new Error(errorText);
-    }
-
     const data = await res.json();
-    setResponse(data.choices?.[0]?.message?.content || 'No response');
+    console.log('Response JSON:', data); // ← ADD THIS LINE
+
+    if (!data.choices || !data.choices[0]) {
+      setResponse('⚠️ No valid response from AI.');
+    } else {
+      setResponse(data.choices[0].message.content);
+    }
   } catch (err) {
     console.error(err);
-    setResponse('Error: ' + (err as Error).message);
+    setResponse('❌ Error contacting AI.');
   }
 
   setLoading(false);
 }
+
 
 
 
