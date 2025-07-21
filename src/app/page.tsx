@@ -44,15 +44,15 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-white to-gray-100 flex flex-col items-center justify-center p-4">
-      <div className="bg-white shadow-2xl rounded-2xl p-8 max-w-xl w-full">
-        <h1 className="text-4xl font-extrabold text-center mb-6 text-gray-800">
-          🚀 AI Startup Idea Generator
+    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-gray-50">
+      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-2xl">
+        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
+          💡 AI Startup Idea Generator
         </h1>
 
         <textarea
-          className="w-full p-4 border-2 border-gray-200 rounded-xl mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
-          rows={4}
+          className="w-full p-4 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition mb-6"
+          rows={5}
           placeholder="Describe your interest (e.g., 'AI for education')"
           value={input}
           onChange={(e) => setInput(e.target.value)}
@@ -61,13 +61,13 @@ export default function Home() {
         <button
           onClick={generateIdea}
           disabled={loading}
-          className="w-full bg-blue-600 text-white font-semibold py-3 rounded-xl transition duration-200 hover:bg-blue-700 disabled:opacity-50"
+          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl shadow-md transition disabled:opacity-50"
         >
           {loading ? 'Generating...' : 'Generate Idea'}
         </button>
 
         {response && (
-          <div className="mt-6 bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm whitespace-pre-line text-gray-800">
+          <div className="mt-8 p-5 bg-gray-100 border border-gray-200 rounded-xl shadow-inner whitespace-pre-line text-gray-800">
             {response}
           </div>
         )}
