@@ -44,34 +44,30 @@ export default function Home() {
   }
 
   return (
-    <main className="min-h-screen flex flex-col items-center justify-center px-4 py-10 bg-gray-50">
-      <div className="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-2xl">
-        <h1 className="text-4xl font-bold text-center mb-8 text-gray-800">
-          💡 AI Startup Idea Generator
-        </h1>
+    <main className="min-h-screen flex flex-col items-center justify-center p-4">
+      <h1 className="text-3xl font-bold mb-6">AI Startup Idea Generator</h1>
 
-        <textarea
-          className="w-full p-4 border border-gray-300 rounded-xl shadow-sm focus:ring-2 focus:ring-indigo-400 focus:outline-none transition mb-6"
-          rows={5}
-          placeholder="Describe your interest (e.g., 'AI for education')"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-        />
+      <textarea
+        className="w-full max-w-md p-3 border rounded-md mb-4"
+        rows={4}
+        placeholder="Describe your interest (e.g., 'AI for education')"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
 
-        <button
-          onClick={generateIdea}
-          disabled={loading}
-          className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-3 rounded-xl shadow-md transition disabled:opacity-50"
-        >
-          {loading ? 'Generating...' : 'Generate Idea'}
-        </button>
+      <button
+        onClick={generateIdea}
+        disabled={loading}
+        className="bg-black text-white px-4 py-2 rounded hover:bg-gray-800 disabled:opacity-50"
+      >
+        {loading ? 'Generating...' : 'Generate'}
+      </button>
 
-        {response && (
-          <div className="mt-8 p-5 bg-gray-100 border border-gray-200 rounded-xl shadow-inner whitespace-pre-line text-gray-800">
-            {response}
-          </div>
-        )}
-      </div>
+      {response && (
+        <div className="mt-6 p-4 bg-gray-100 border rounded max-w-md whitespace-pre-line">
+          {response}
+        </div>
+      )}
     </main>
   );
 }
