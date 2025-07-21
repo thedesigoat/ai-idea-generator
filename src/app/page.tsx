@@ -8,34 +8,41 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   async function generateIdea() {
-    if (!input) return;
-    setLoading(true);
-    setResponse('');
+  if (!input) return;
+  setLoading(true);
+  setResponse('');
 
-    try {
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Authorization': 'Bearer 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',
-          'Content-Type': 'application/json',
-          'HTTP-Referer': 'https://aiideagenerator.vercel.app', // your site
-          'X-Title': 'AI Idea Generator'
-        },
-        body: JSON.stringify({
-          model: 'openrouter/openai/gpt-3.5-turbo',
-          messages: [{ role: 'user', content: input }]
-        }),
-      });
+  try {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer sk-or-v1-77d2407687d3ee01b5369',
+        'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://aiideagenerator.vercel.app',
+        'X-Title': 'AI Idea Generator'
+      },
+      body: JSON.stringify({
+        model: 'openrouter/openai/gpt-3.5-turbo',
+        messages: [{ role: 'user', content: input }]
+      }),
+    });
 
-      const data = await res.json();
-      setResponse(data.choices?.[0]?.message?.content || 'No response');
-    } catch (err) {
-      console.error(err);
-      setResponse('Error contacting AI.');
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(errorText);
     }
 
-    setLoading(false);
+    const data = await res.json();
+    setResponse(data.choices?.[0]?.message?.content || 'No response');
+  } catch (err) {
+    console.error(err);
+    setResponse('Error: ' + (err as Error).message);
   }
+
+  setLoading(false);
+}
+
+
 
   return (
     <main className="min-h-screen flex flex-col items-center justify-center p-4">
