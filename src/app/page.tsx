@@ -16,7 +16,7 @@ export default function Home() {
     const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': 'Bearer sk-or-v1-YOUR_KEY',
+        'Authorization': 'Bearer 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',
         'Content-Type': 'application/json',
         'HTTP-Referer': 'https://aiideagenerator.vercel.app',
         'X-Title': 'AI Idea Generator'
