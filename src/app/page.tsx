@@ -63,10 +63,12 @@ export default function Home() {
       {loading ? 'Generating...' : 'Generate'}
     </button>
 
-    {response && (
+        {response && (
       <div className="mt-6 p-4 bg-gray-800 text-gray-200 border border-gray-700 rounded max-w-md whitespace-pre-line">
         {response}
       </div>
     )}
   </main>
-);
+); // closes the return
+
+} // ✅ closes the function Home
