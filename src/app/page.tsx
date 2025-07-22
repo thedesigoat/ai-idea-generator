@@ -27,16 +27,35 @@ export default function Home() {
         }),
       });
 
+      // Check for non-2xx HTTP status
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error('API error response:', errorText);
+        setResponse(`❌ API returned an error: ${res.status}`);
+        setLoading(false);
+        return;
+      }
+
       const data = await res.json();
       console.log('Response JSON:', data);
 
-      if (!data.choices || !data.choices[0]) {
-        setResponse('⚠️ No valid response from AI.');
-      } else {
-        setResponse(data.choices[0].message.content);
+      // Check for API-level error
+      if (data.error) {
+        setResponse(`❌ API Error: ${data.error.message || 'Unknown error'}`);
+        setLoading(false);
+        return;
       }
+
+      // Check if choices are valid
+      if (!data.choices || !data.choices[0]?.message?.content) {
+        setResponse('⚠️ No valid response from AI.');
+        setLoading(false);
+        return;
+      }
+
+      setResponse(data.choices[0].message.content);
     } catch (err) {
-      console.error(err);
+      console.error('Fetch exception:', err);
       setResponse('❌ Error contacting AI.');
     }
 
@@ -44,31 +63,30 @@ export default function Home() {
   }
 
   return (
-  <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-900 text-white">
-    <h1 className="text-3xl font-bold mb-6">AI Startup Idea Generator</h1>
+    <main className="min-h-screen flex flex-col items-center justify-center p-4 bg-gray-900 text-white">
+      <h1 className="text-3xl font-bold mb-6">AI Startup Idea Generator</h1>
 
-    <textarea
-      className="w-full max-w-md p-3 border border-gray-700 bg-gray-800 text-white rounded-md mb-4"
-      rows={4}
-      placeholder="Describe your interest (e.g., 'AI for education')"
-      value={input}
-      onChange={(e) => setInput(e.target.value)}
-    />
+      <textarea
+        className="w-full max-w-md p-3 border border-gray-700 bg-gray-800 text-white rounded-md mb-4"
+        rows={4}
+        placeholder="Describe your interest (e.g., 'AI for education')"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+      />
 
-    <button
-      onClick={generateIdea}
-      disabled={loading}
-      className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
-    >
-      {loading ? 'Generating...' : 'Generate'}
-    </button>
+      <button
+        onClick={generateIdea}
+        disabled={loading}
+        className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50"
+      >
+        {loading ? 'Generating...' : 'Generate'}
+      </button>
 
-        {response && (
-      <div className="mt-6 p-4 bg-gray-800 text-gray-200 border border-gray-700 rounded max-w-md whitespace-pre-line">
-        {response}
-      </div>
-    )}
-  </main>
-); // closes the return
-
-} // ✅ closes the function Home
+      {response && (
+        <div className="mt-6 p-4 bg-gray-800 text-gray-200 border border-gray-700 rounded max-w-md whitespace-pre-line">
+          {response}
+        </div>
+      )}
+    </main>
+  );
+}
